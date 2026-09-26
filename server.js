@@ -76,7 +76,9 @@ async function fetchDiscordEvents() {
 // ============ API pour Roblox ============
 app.use((req, res, next) => {
   if (API_KEY) {
-    const key = req.header('x-api-key');
+    // Accepte la cle soit dans le header (utilise par Roblox), soit en parametre d'URL
+    // (pratique pour tester directement dans un navigateur : ?key=ta_cle)
+    const key = req.header('x-api-key') || req.query.key;
     if (key !== API_KEY) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
